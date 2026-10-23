@@ -120,6 +120,25 @@ INVALID_URI_REFS = (
 )
 
 
+@pytest.mark.parametrize('url, rule', [
+    ('https://example.com/path?query=value#fragment', 'URI'),
+    ('https://example.com/path?query=value#fragment', 'URI_reference'),
+    ('urn:example:book', 'URI'),
+    ('https://example.com/path%0A', 'URI'),
+    ('', 'URI_reference'),
+    ('../path', 'URI_reference'),
+    ('?query=value', 'URI_reference'),
+    ('#fragment', 'URI_reference'),
+])
+@pytest.mark.parametrize('suffix', ['', '\n', '\r\n', '\n\n'])
+def test_requires_complete_uri_match(url, rule, suffix):
+    match = validate_rfc3986(url + suffix, rule=rule)
+    if suffix:
+        assert match is None
+    else:
+        assert match.group(0) == url
+
+
 @pytest.mark.parametrize('rule', ('URI', 'URI_reference'))
 @pytest.mark.parametrize('url', VALID_URIS)
 def test_valid_urls(url, rule):

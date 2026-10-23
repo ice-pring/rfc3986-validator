@@ -82,9 +82,9 @@ RELATIVE_REF_RE = r"""
        pchar=PCHAR_RE
 )
 # Compiled URI regex rule
-URI_RE_COMP = re.compile(r"^{uri_re}$".format(uri_re=URI_RE), re.VERBOSE)
+URI_RE_COMP = re.compile(r"^{uri_re}\Z".format(uri_re=URI_RE), re.VERBOSE)
 # Compiled URI-reference regex rule. URI-reference is defined as: URI / relative-ref
-URI_REF_RE_COMP = re.compile(r"^(?:{uri_re}|{relative_ref})$".format(
+URI_REF_RE_COMP = re.compile(r"^(?:{uri_re}|{relative_ref})\Z".format(
        uri_re=URI_RE,
        relative_ref=RELATIVE_REF_RE,
 ), re.VERBOSE)
